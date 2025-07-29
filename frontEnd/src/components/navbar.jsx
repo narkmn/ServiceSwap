@@ -5,7 +5,7 @@ const Navbar = () => {
     <div className="container-fluid">
       <nav className="navbar navbar-expand-lg bg-light px-4">
         <Link className="navbar-brand" to="/">
-          <img src="/img/logo.png" alt="Logo" width="150" />
+          <img src="/images/logo.png" alt="Logo" width="150" />
         </Link>
 
         <button

@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+
 
 const Home = () => {
   const [services, setServices] = useState([]);
+
+  const navigate = useNavigate();
+  const handleClickSearch = () => {
+    navigate('/search-service');
+  };
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/services')
@@ -18,9 +26,9 @@ const Home = () => {
 
       <div className="row justify-content-center gy-4">
         {/* Card 1 */}
-        <div className="col-md-5 col-lg-4">
+        <div className="col-md-5 col-lg-4" onClick={handleClickSearch} style={{ cursor: 'pointer' }}>
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
-            <img src="/img/icon_find_service.png" alt="Find a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
+            <img src="/images/icon_find_service.png" alt="Find a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Find a Service</h5>
             <p className="text-muted text-center">
               Looking for a service? Start here to connect with someone ready to help!
@@ -31,7 +39,7 @@ const Home = () => {
         {/* Card 2 */}
         <div className="col-md-5 col-lg-4">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
-            <img src="/img/icon_your_offer.png" alt="Offer a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
+            <img src="/images/icon_your_offer.png" alt="Offer a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Offer a Service</h5>
             <p className="text-muted text-center">
               Offering something? Create or update your service and keep it up to date.
@@ -42,7 +50,7 @@ const Home = () => {
         {/* Card 3 */}
         <div className="col-md-5 col-lg-4">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
-            <img src="/img/icon_your_request.png" alt="Your Service Requests" style={{ width: "60px", height: "60px" }} className="mb-2" />
+            <img src="/images/icon_your_request.png" alt="Your Service Requests" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Your Service Requests</h5>
             <p className="text-muted text-center">
               Check on the services you've requested from others.
@@ -53,7 +61,7 @@ const Home = () => {
         {/* Card 4 */}
         <div className="col-md-5 col-lg-4">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
-            <img src="/img/icon_your_service.png" alt="Requests for Your Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
+            <img src="/images/icon_your_service.png" alt="Requests for Your Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Requests for Your Service</h5>
             <p className="text-muted text-center">
               See who's asked for your help. Respond and stay connected.

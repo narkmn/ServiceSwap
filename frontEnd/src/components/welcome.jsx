@@ -5,7 +5,7 @@ const Welcome = () => {
     <div className="container">
       <div className="row align-items-center mt-3">
         <div className="col-sm-9 text-center">
-          <img src="/img/welcome_page.jpg" className="img-fluid" alt="Welcome" />
+          <img src="/images/welcome_page.jpg" className="img-fluid" alt="Welcome" />
         </div>
         <section className="col-sm-3 align-items-center text-center">
           <p>
