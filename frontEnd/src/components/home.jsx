@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
-
 const Home = () => {
   const [services, setServices] = useState([]);
-
   const navigate = useNavigate();
+
   const handleClickSearch = () => {
-    navigate('/search-service');
+    navigate('/find-service');
   };
 
   useEffect(() => {
@@ -18,15 +16,14 @@ const Home = () => {
       .catch(error => console.error('Error fetching services:', error));
   }, []);
 
-  console.log('Services:', services);
-
   return (
     <div className="container py-4">
       <h1 className="text-center mb-5">What would you like to do today?</h1>
 
+      {/* Static Cards Section */}
       <div className="row justify-content-center gy-4">
         {/* Card 1 */}
-        <div className="col-md-5 col-lg-4" onClick={handleClickSearch} style={{ cursor: 'pointer' }}>
+        <div className="col-12 col-md-6 col-lg-6" onClick={handleClickSearch} style={{ cursor: 'pointer' }}>
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_find_service.png" alt="Find a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Find a Service</h5>
@@ -37,7 +34,7 @@ const Home = () => {
         </div>
 
         {/* Card 2 */}
-        <div className="col-md-5 col-lg-4">
+        <div className="col-12 col-md-6 col-lg-6">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_your_offer.png" alt="Offer a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Offer a Service</h5>
@@ -48,7 +45,7 @@ const Home = () => {
         </div>
 
         {/* Card 3 */}
-        <div className="col-md-5 col-lg-4">
+        <div className="col-12 col-md-6 col-lg-6">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_your_request.png" alt="Your Service Requests" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Your Service Requests</h5>
@@ -59,7 +56,7 @@ const Home = () => {
         </div>
 
         {/* Card 4 */}
-        <div className="col-md-5 col-lg-4">
+        <div className="col-12 col-md-6 col-lg-6">
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_your_service.png" alt="Requests for Your Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Requests for Your Service</h5>
@@ -72,9 +69,9 @@ const Home = () => {
 
       {/* Dynamic Services Section */}
       <h2 className="text-center my-5">Latest Services</h2>
-      <div className="row">
+      <div className="row gy-4">
         {services.map(service => (
-          <div key={service.id} className="col-md-4 mb-4">
+          <div key={service.id} className="col-12 col-md-6 col-lg-6">
             <div className="card h-100 shadow-sm">
               <div className="card-body">
                 <h5 className="card-title">{service.title}</h5>

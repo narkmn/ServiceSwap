@@ -8,7 +8,9 @@ import RequestConfirm from './components/requestConfirm.jsx';
 import RequestSent from './components/RequestSent.jsx';
 import Yourservices from './components/yourservices.jsx';
 import LoginPage from './components/Auth/loginPage.jsx';
-import SearchService from './components/searchService.jsx';
+import FindService from './components/findService.jsx'; 
+import RegisterPage from './components/Auth/registerPage.jsx';
+import Profile from './components/Auth/profile.jsx';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,10 +31,12 @@ function App() {
         />
         <Route path="/home" element={<Home />}/>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/request-confirm" element={<RequestConfirm />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/request-confirm/:serviceId" element={<RequestConfirm />} />
         <Route path="/request-sent" element={<RequestSent />} />
         <Route path="/your-services" element={<Yourservices />} />
-        <Route path="/search-service" element={<SearchService />} />
+        <Route path="/find-service" element={<FindService />} />
       </Routes>
       {/* {isLoggedIn ? (
         <>
