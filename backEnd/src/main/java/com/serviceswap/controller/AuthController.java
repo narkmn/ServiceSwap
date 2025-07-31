@@ -15,12 +15,14 @@ public class AuthController {
 
     private final AuthService authService;
 
+    // Register a new user and return JWT
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody User user) {
         String token = authService.register(user);
         return ResponseEntity.ok(Map.of("token", token));
     }
 
+    // Login existing user and return JWT if credentials match
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String email = credentials.get("email");

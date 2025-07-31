@@ -66,23 +66,6 @@ const Home = () => {
           </button>
         </div>
       </div>
-
-      {/* Dynamic Services Section */}
-      <h2 className="text-center my-5">Latest Services</h2>
-      <div className="row gy-4">
-        {services.map(service => (
-          <div key={service.id} className="col-12 col-md-6 col-lg-6">
-            <div className="card h-100 shadow-sm">
-              <div className="card-body">
-                <h5 className="card-title">{service.title}</h5>
-                <p className="card-text">{service.description}</p>
-                <span className="badge bg-secondary">{service.category}</span>
-                <div className="mt-2 text-muted">{service.location}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

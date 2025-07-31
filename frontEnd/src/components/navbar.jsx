@@ -1,6 +1,18 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setUserName('');
+    navigate('/');
+  };
+
   return (
     <div className="container-fluid">
       <nav className="navbar navbar-expand-lg bg-light px-4">
@@ -34,9 +46,23 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/contact">Contact Us</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/login">Log in</Link>
-            </li>
+
+            {isLoggedIn ? (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">{userName}</Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
+                    Sign out
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">Log in</Link>
+              </li>
+            )}
           </ul>
         </div>
       </nav>

@@ -2,6 +2,7 @@ package com.serviceswap.service;
 
 import com.serviceswap.model.User;
 import com.serviceswap.repository.UserRepository;
+import com.serviceswap.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,26 +14,26 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final JwtUtil jwtUtil;  //
     private final PasswordEncoder passwordEncoder;
 
+    // Register new user
     public String register(User user) {
+        // Hash password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("user");
+        user.setRole("USER");
+
+        // Save user
         userRepository.save(user);
-        return jwtService.generateToken(user.getEmail());
+
+        // Return JWT
+        return jwtUtil.generateToken(user.getEmail());
     }
 
+    // Login existing user
     public Optional<String> login(String email, String rawPassword) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            if (passwordEncoder.matches(rawPassword, user.getPassword())) {
-                return Optional.of(jwtService.generateToken(email));
-            }
-        }
-
-        return Optional.empty();
+        return userRepository.findByEmail(email)
+                .filter(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
+                .map(user -> jwtUtil.generateToken(email)); //
     }
 }

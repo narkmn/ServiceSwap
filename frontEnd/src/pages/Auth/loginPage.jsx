@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
+  const navigate = useNavigate();
 
-
-const LoginPage = () => {
-
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [pswd, setPswd] = useState('');
   const [error, setError] = useState('');
 
@@ -13,15 +13,35 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
-        username,
+      let response = await axios.post('http://localhost:8080/api/auth/login', {
+        email: email,
         password: pswd
       });
 
-      console.log('Login success:', response.data);
+      const token = response.data.token; 
+      localStorage.setItem('token', token);
+      
+      //has to be changed to match the backend
+      let users, name;
+
+      response = await axios.get('http://localhost:8080/api/users');
+
+      users = Array.isArray(response.data) ? response.data : [];
+      name = users.find(user => user.email.toLowerCase() === email.toLowerCase()).name;
+      
+      
+      // Save user name in localStorage
+      localStorage.setItem('name', name);
+      localStorage.setItem('isLoggedIn', true);
+      navigate('/'); 
+
+      //change state
+      setIsLoggedIn(true);
+      setUserName(name);
+
     } catch (err) {
       console.error('Login failed:', err);
-      setError('Incorrect username or password. Please try again.');
+      setError('Incorrect email or password. Please try again.');
     }
   };
 
@@ -30,14 +50,14 @@ const LoginPage = () => {
         <h1 className="text-center m-4">Log in to ServiceSwap</h1>
         <form className="mx-auto" style={{ maxWidth: '400px' }} onSubmit={handleLogin}>
           <div className="row mb-3 align-items-center">
-            <label htmlFor="username" className="col-sm-3 col-form-label">Username</label>
+            <label htmlFor="email" className="col-sm-3 col-form-label">Email</label>
             <div className="col-sm-9">
               <input
                 type="text"
                 className="form-control"
-                id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
