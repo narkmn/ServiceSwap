@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Request from "./request";
+import Request from "../../components/request";
 
 const currentRequests = [
   {
@@ -79,7 +79,7 @@ const Yourservices = () => {
         </ol>
       </nav>
 
-      <h3 className="mb-3">Current Requests</h3>
+      <h3 className="mb-3">Your Active Services</h3>
       <table className="table table-bordered align-middle mb-5">
         <thead>
           <tr>
@@ -136,7 +136,7 @@ const Yourservices = () => {
         </tbody>
       </table>
 
-      <h3 className="mb-3">Past Requests</h3>
+      <h3 className="mb-3">Service Transaction History</h3>
       <table className="table table-bordered align-middle">
         <thead>
           <tr>

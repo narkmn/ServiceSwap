@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProfileAccountInfo from '../../components/profileAccountInfo';
-import ProfilePersonalInfo from '../../components/profilePersonalInfo';
-import ProfileSubsPlans from '../../components/profileSubsPlans';
+import ProfileAccountInfo from './profileAccountInfo';
+import ProfilePersonalInfo from './profilePersonalInfo';
+import ProfileSubsPlans from './profileSubsPlans';
+import ProfilePayment from './profilePayment';
 
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('account');
@@ -16,9 +17,9 @@ const Profile = () => {
       case 'subscription':
         return <ProfileSubsPlans/>;
       case 'payment':
-        return <div>Payment method form goes here...</div>;
+        return <ProfilePayment/>;
       case 'credit':
-        return <div>Time credit details go here...</div>;
+        return <div>Time credits</div>;
       default:
         return null;
     }

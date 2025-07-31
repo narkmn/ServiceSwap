@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
+const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName, userId, setUserId}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -22,22 +22,25 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
       localStorage.setItem('token', token);
       
       //has to be changed to match the backend
-      let users, name;
+      let users, name, userId;
 
       response = await axios.get('http://localhost:8080/api/users');
 
       users = Array.isArray(response.data) ? response.data : [];
       name = users.find(user => user.email.toLowerCase() === email.toLowerCase()).name;
+      userId = users.find(user => user.email.toLowerCase() === email.toLowerCase()).id;
       
       
       // Save user name in localStorage
       localStorage.setItem('name', name);
+      localStorage.setItem('userId', userId);
       localStorage.setItem('isLoggedIn', true);
       navigate('/'); 
 
       //change state
       setIsLoggedIn(true);
       setUserName(name);
+      setUserId(userId);
 
     } catch (err) {
       console.error('Login failed:', err);
@@ -77,7 +80,7 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
           </div>
           {error && <p className="text-danger d-block text-center mt-2">{error}</p>}
           <button type="submit" className="btn btn-primary w-100 mt-2">Log in</button>
-          <a href="#" className="d-block text-center mt-2">Forget Password?</a>
+          <a href="forgot-password" className="d-block text-center mt-2">Forget Password?</a>
         </form>
       </div>);
 }

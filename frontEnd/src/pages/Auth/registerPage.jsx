@@ -131,7 +131,6 @@ return (
 
           <div className="d-flex justify-content-center mt-4">
             <button type="submit" className="btn btn-primary mx-2">Create Account</button>
-            <button type="reset" className="btn btn-outline-secondary mx-2">Reset</button>
           </div>
         </form>
       </div>

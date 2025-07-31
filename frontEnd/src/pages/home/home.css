@@ -1,0 +1,52 @@
+.aboutus-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 30px;
+  flex-wrap: wrap; /* stacks on small screens */
+  background-color: #f9f9f9;
+  border-radius: 12px;
+}
+.students-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+}
+.student-card {
+  display: flex;
+  flex-direction: column; /* Stack image on top, info below */
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  width: 220px;
+}
+
+.student-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0077cc;
+  margin-bottom: 12px;
+}
+
+.student-info {
+  text-align: center;
+}
+
+.student-info p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.student-info strong {
+  color: #000;
+}

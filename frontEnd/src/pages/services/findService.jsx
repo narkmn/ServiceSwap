@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import ServiceCard from './serviceCard';
-import ServiceModal from './serviceModal';
+import ServiceCard from '../../components/serviceCard';
+import ServiceModal from '../../components/serviceModal';
 
 const FindService = () => {
   const [services, setServices] = useState([]);

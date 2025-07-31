@@ -6,10 +6,6 @@ const Home = () => {
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
 
-  const handleClickSearch = () => {
-    navigate('/find-service');
-  };
-
   useEffect(() => {
     axios.get('http://localhost:8080/api/services')
       .then(response => setServices(response.data))
@@ -23,7 +19,7 @@ const Home = () => {
       {/* Static Cards Section */}
       <div className="row justify-content-center gy-4">
         {/* Card 1 */}
-        <div className="col-12 col-md-6 col-lg-6" onClick={handleClickSearch} style={{ cursor: 'pointer' }}>
+        <div className="col-12 col-md-6 col-lg-6" onClick={()=>navigate('/find-service')} style={{ cursor: 'pointer' }}>
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_find_service.png" alt="Find a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Find a Service</h5>
@@ -34,7 +30,7 @@ const Home = () => {
         </div>
 
         {/* Card 2 */}
-        <div className="col-12 col-md-6 col-lg-6">
+        <div className="col-12 col-md-6 col-lg-6" onClick={() => navigate('/create-service')} style={{ cursor: 'pointer' }}>
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_your_offer.png" alt="Offer a Service" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Offer a Service</h5>
@@ -45,7 +41,7 @@ const Home = () => {
         </div>
 
         {/* Card 3 */}
-        <div className="col-12 col-md-6 col-lg-6">
+        <div className="col-12 col-md-6 col-lg-6" onClick={() => navigate('/your-services')} style={{ cursor: 'pointer' }}>
           <button className="btn btn-light w-100 p-4 shadow-sm d-flex flex-column align-items-center h-100">
             <img src="/images/icon_your_request.png" alt="Your Service Requests" style={{ width: "60px", height: "60px" }} className="mb-2" />
             <h5>Your Service Requests</h5>

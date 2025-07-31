@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const ProfilePersonalInfo = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
@@ -12,14 +14,29 @@ const ProfilePersonalInfo = ({ isLoggedIn, setIsLoggedIn, userName, setUserName 
     province: '',
     postalCode: ''
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const userId = localStorage.getItem('userId'|| '1');
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    try {
+      await axios.patch(`http://localhost:8080/api/users/${userId}`, formData);
+      setError(null);
+      navigate('/profile', { state: { success: 'Profile updated successfully!' } });
+    } catch (err) {
+      console.error('Error updating user:', err);
+      setError(err.response?.data?.message || 'Failed to update profile');
+    }
+
+
     console.log('Form submitted:', formData);
     // Example: await axios.post('http://localhost:8080/api/users/update', formData);
   };

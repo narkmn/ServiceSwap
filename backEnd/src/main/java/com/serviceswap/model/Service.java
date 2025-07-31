@@ -18,8 +18,19 @@ public class Service {
 
     private String title;
     private String category;
+    @Column(nullable = true)
     private String description;
+    @Column(nullable = true)
+    private String serviceType;
+    @Column(nullable = true)
+    private String serviceDifficulty;
+    @Column(nullable = true)
+    private String img_url;
+    @Column(nullable = true)
+    private String status;
+    @Column(nullable = true)
     private String availability;
+    @Column(nullable = true)
     private String location;
 
     @Column(name = "created_at")
