@@ -17,6 +17,9 @@ import HowItWorks from './pages/home/howItWorks.jsx';
 import ForgotPassword from './pages/Auth/forgotPassword.jsx'; 
 import FaqPage from './pages/home/faqPage.jsx'; 
 import ContactUs from './pages/home/contactUs.jsx'; 
+
+
+import Navbar from './components/navbar.jsx';
 import Whoops404 from './pages/home/whoops.jsx'; 
 
 function App() {
