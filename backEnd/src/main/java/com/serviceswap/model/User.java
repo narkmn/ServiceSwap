@@ -1,18 +1,19 @@
 package com.serviceswap.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name="user")
+@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,36 +22,35 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
 
-    private String name;
-    private String location;
-    private String status;
+    private String username;
     private String role;
-
-    @Column(nullable = true)
+    private String status;
+    @Column(name = "first_name", nullable = true)
     private String firstName;
-    @Column(nullable = true)
+
+    @Column(name = "last_name", nullable = true)
     private String lastName;
-    @Column(nullable = true)
-    private String address;
-    @Column(nullable = true)
-    private String city;
-    @Column(nullable = true)
-    private String province;
-    @Column(nullable = true)
-    private String postalCode;
-    @Column(nullable = true)
+
     private String phone;
-    @Column(nullable = true)
-    private Date dob;
-    @Column(nullable = true)
-    private String subscriptionType;
-    @Column(nullable = true)
-    private long totalTimeCredit;
+    private String address;
+    private String city;
+    private String province;
+    @Column(name = "postal_code", nullable = true)
+    private String postalCode;
+    private LocalDate dob;
+
+    @Column(name = "subcription")
+    private String subscription;
+
+    @Column(name = "total_time_credit")
+    private Long totalTimeCredit;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TimeCredit> timeCredits;
 }

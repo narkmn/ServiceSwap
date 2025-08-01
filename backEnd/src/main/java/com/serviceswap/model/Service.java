@@ -1,5 +1,6 @@
 package com.serviceswap.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,32 +12,50 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Service {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    @Column(name = "service_title", nullable = false)
+    private String serviceTitle;
+
+    @Column(nullable = true)
     private String category;
-    @Column(nullable = true)
+
+    @Column(nullable = true, length = 500)
     private String description;
-    @Column(nullable = true)
+
+    @Column(name = "service_type", nullable = true)
     private String serviceType;
-    @Column(nullable = true)
+
+    @Column(name = "service_difficulty", nullable = true)
     private String serviceDifficulty;
-    @Column(nullable = true)
-    private String img_url;
+
+    @Column(name = "img_url", nullable = true)
+    private String imgUrl;
+
     @Column(nullable = true)
     private String status;
-    @Column(nullable = true)
-    private String availability;
-    @Column(nullable = true)
-    private String location;
 
-    @Column(name = "created_at")
+    @Column(nullable = true)
+    private String availability; // newly added
+
+    @Column(nullable = true)
+    private String location; // newly added
+
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @Column(nullable = false)
+    private double averageRating = 0.0;
+
+    @Column(nullable = false)
+    private int totalRatings = 0;
 }
