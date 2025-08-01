@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
 
 const ProfilePersonalInfo = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
   const [formData, setFormData] = useState({
@@ -30,6 +29,7 @@ const ProfilePersonalInfo = ({ isLoggedIn, setIsLoggedIn, userName, setUserName 
     try {
       await axios.patch(`http://localhost:8080/api/users/${userId}`, formData);
       setError(null);
+      alert('Profile updated successfully!');
       navigate('/profile', { state: { success: 'Profile updated successfully!' } });
     } catch (err) {
       console.error('Error updating user:', err);

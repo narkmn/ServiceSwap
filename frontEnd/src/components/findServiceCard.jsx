@@ -1,8 +1,8 @@
-const ServiceCard = ({ service, onClick }) => {
+const FindServiceCard = ({ service, onClick }) => {
   const imageSrc = `/images/service${String(service.id).padStart(2, '0')}.jpg`;
 
   return (
-    <div
+    <div 
       className="card h-100 shadow-sm cursor-pointer hover:shadow-lg transition"
       onClick={() => onClick(service)}
     >
@@ -23,4 +23,4 @@ const ServiceCard = ({ service, onClick }) => {
   );
 };
 
-export default ServiceCard;
+export default FindServiceCard;

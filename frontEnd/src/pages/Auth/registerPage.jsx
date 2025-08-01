@@ -1,9 +1,19 @@
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterPage = () => {
+const RegisterPage = ({isLoggedIn, setIsLoggedIn, userName, setUserName, userId, setUserId }) => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userId');
+    setIsLoggedIn(false);
+    setUserName('');
+    setUserId('');
+  }, [setIsLoggedIn, setUserName, setUserId]);
 
   const [formData, setFormData] = useState({
     username: '',
@@ -34,24 +44,42 @@ const RegisterPage = () => {
       return setError('You must accept the terms and conditions.');
     }
 
+    let response;
     try {
-      await axios.post('http://localhost:8080/api/auth/register', {
-        name: formData.username,
+      response = await axios.post('http://localhost:8080/api/auth/register', {
+        username: formData.username,
         email: formData.email,
         password: formData.password,
         location: 'Vancouver, BC',
         role: 'user'
       });
 
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      response = await axios.post('http://localhost:8080/api/auth/login', {
         email: formData.email,
         password: formData.password
       });
 
       const token = response.data.token; 
-      localStorage.setItem('token', token); 
-      localStorage.setItem('email', email);
+
+      //has to be changed to match the backend
+      let users, name, userId;
+
+      response = await axios.get('http://localhost:8080/api/users');
+
+      users = Array.isArray(response.data) ? response.data : [];
+      name = users.find(user => user.email.toLowerCase() === formData.email.toLowerCase()).username;
+      userId = users.find(user => user.email.toLowerCase() === formData.email.toLowerCase()).id;
+
+      // // Save user name in localStorage
       localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('token', token); 
+      localStorage.setItem('name', name);
+      localStorage.setItem('userId', userId);
+
+      //change state
+      setIsLoggedIn(true);
+      setUserName(name);
+      setUserId(userId);
 
       navigate('/profile');
     } catch (err) {

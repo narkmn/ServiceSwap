@@ -1,17 +1,49 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import ServiceCard from '../../components/serviceCard';
-import ServiceModal from '../../components/serviceModal';
+import FindServiceCard from '../../components/findServiceCard';
+import FindServiceModal from '../../components/findServiceModal';
+import { serviceCategory } from '../../assets/service';
 
 const FindService = () => {
   const [services, setServices] = useState([]);
+  const [filteredServices, setFilteredServices] = useState([]);
   const [selectedService, setSelectedService] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const userId = localStorage.getItem('userId');
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/services')
-      .then(response => setServices(response.data))
+      .then(response => {
+        const filtered = response.data.filter(service => service.user.id !== Number(userId));
+        setServices(filtered);
+        setFilteredServices(filtered); // default
+      })
       .catch(error => console.error('Error fetching services:', error));
   }, []);
+
+  useEffect(() => {
+    const lowerSearch = searchTerm.toLowerCase();
+
+    const filtered = services.filter(service => {
+      const title = service.title || '';
+      const description = service.description || '';
+      const category = service.category || '';
+
+      const matchesText =
+        title.toLowerCase().includes(lowerSearch) ||
+        description.toLowerCase().includes(lowerSearch);
+
+      const matchesCategory = selectedCategory
+        ? category.toLowerCase() === selectedCategory.toLowerCase()
+        : true;
+
+      return matchesText && matchesCategory;
+    });
+
+    setFilteredServices(filtered);
+  }, [searchTerm, selectedCategory, services]);
 
   const handleCardClick = (service) => {
     setSelectedService(service);
@@ -28,40 +60,42 @@ const FindService = () => {
           </ol>
         </nav>
 
-        {/* Search Bar */}
+        {/* Search and Filter */}
         <div className="row g-2 align-items-center mb-4">
-          <div className="col-md-5">
-            <input className="form-control" type="text" placeholder="Search" />
+          <div className="col-md-6">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Search services..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-          <div className="col-md-4">
-            <select id="serviceCategory" className="form-select">
-              <option value="">Select a category</option>
-              <option value="tech">Technology & IT Support</option>
-              <option value="home">Home Maintenance & Repairs</option>
-              <option value="education">Education & Tutoring</option>
-              <option value="wellness">Health & Wellness</option>
-              <option value="pet">Pet Care</option>
-              <option value="transport">Transportation & Delivery</option>
-              <option value="creative">Creative & Design</option>
-              <option value="other">Other</option>
+          <div className="col-md-6">
+            <select
+              className="form-select"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="">All Categories</option>
+              {serviceCategory.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
             </select>
-          </div>
-          <div className="col-md-3">
-            <button className="btn btn-primary w-100" type="button">Search</button>
           </div>
         </div>
 
-        {/* Fixed-width Card Grid */}
+        {/* Service Cards */}
         <div className="d-flex flex-wrap justify-content-start gap-4">
-          {services.map((service, index) => (
-            <div key={index} style={{ flex: '0 0 300px' }}>
-              <ServiceCard service={service} onClick={() => handleCardClick(service)} />
+          {filteredServices.map((service, index) => (
+            <div key={index} className="col-md-3 mb-4" >
+              <FindServiceCard service={service} onClick={() => handleCardClick(service)} />
             </div>
           ))}
         </div>
 
         {selectedService && (
-          <ServiceModal service={selectedService} onClose={() => setSelectedService(null)} />
+          <FindServiceModal service={selectedService} onClose={() => setSelectedService(null)} />
         )}
       </div>
     </div>

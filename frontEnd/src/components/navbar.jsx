@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
+const Navbar = ({ isLoggedIn, setIsLoggedIn, userName, setUserName, userId, setUserId }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,6 +10,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn, userName, setUserName }) => {
     localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
     setUserName('');
+    setUserId('');
     navigate('/');
   };
 

@@ -2,13 +2,23 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName, userId, setUserId}) => {
+const LoginPage = ({ handleStateChange=f=>f}) => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [pswd, setPswd] = useState('');
   const [error, setError] = useState('');
 
+  // Clear localStorage and reset state every time login page is rendered, because user might use login URL directly
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userId');
+    handleStateChange(false, '', '');
+  }, []);
+
+  // Handle login
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -18,29 +28,30 @@ const LoginPage = ({ isLoggedIn, setIsLoggedIn, userName, setUserName, userId, s
         password: pswd
       });
 
+      console.log('Login request sent:', { email, password: pswd });
+      console.log('Login response:', response.data);
+
       const token = response.data.token; 
       localStorage.setItem('token', token);
       
-      //has to be changed to match the backend
-      let users, name, userId;
-
       response = await axios.get('http://localhost:8080/api/users');
 
-      users = Array.isArray(response.data) ? response.data : [];
-      name = users.find(user => user.email.toLowerCase() === email.toLowerCase()).name;
-      userId = users.find(user => user.email.toLowerCase() === email.toLowerCase()).id;
-      
+      const users = Array.isArray(response.data) ? response.data : [response.data];
+      const username = users.find(user => user.email.toLowerCase() === email.toLowerCase()).username;
+      const userId = users.find(user => user.email.toLowerCase() === email.toLowerCase()).id;
+      console.log(users);
       
       // Save user name in localStorage
-      localStorage.setItem('name', name);
+      localStorage.setItem('name', username);
       localStorage.setItem('userId', userId);
       localStorage.setItem('isLoggedIn', true);
-      navigate('/'); 
+
+      console.log('Login successful:', username, userId);
 
       //change state
-      setIsLoggedIn(true);
-      setUserName(name);
-      setUserId(userId);
+      handleStateChange(true, username, userId);
+
+      navigate('/'); 
 
     } catch (err) {
       console.error('Login failed:', err);

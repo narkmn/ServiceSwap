@@ -1,66 +1,125 @@
-import { useState, useEffect } from 'react';
-import './App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import Navbar from './components/navbar.jsx';
-import Welcome from './pages/home/welcome.jsx';
-import Home from './pages/home.jsx';
-import RequestConfirm from './components/requestConfirm.jsx';
-import RequestSent from './components/RequestSent.jsx';
-import Yourservices from './pages/services/yourservices.jsx';
-import LoginPage from './pages/Auth/loginPage.jsx';
-import FindService from './pages/services/findService.jsx'; 
-import RegisterPage from './pages/Auth/registerPage.jsx';
-import Profile from './pages/profile/profile.jsx';
-import CreateService from './pages/services/createService.jsx';
-import UpdateService from './components/updateService.jsx'; 
-import HowItWorks from './pages/home/howItWorks.jsx';
-import ForgotPassword from './pages/Auth/forgotPassword.jsx'; 
-import FaqPage from './pages/home/faqPage.jsx'; 
-import ContactUs from './pages/home/contactUs.jsx'; 
-import Whoops404 from './pages/home/whoops.jsx'; 
+import { useState, useEffect } from "react";
+import "./App.css";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import Navbar from "./components/navbar.jsx";
+import Welcome from "./pages/home/welcome.jsx";
+import Home from "./pages/home/home.jsx";
+import RequestConfirm from "./components/requestConfirm.jsx";
+
+import Yourservices from "./pages/services/yourservices.jsx";
+import LoginPage from "./pages/Auth/loginPage.jsx";
+import FindService from "./pages/services/findService.jsx";
+import FindServiceRequest from "./components/findServiceRequest.jsx";
+import RegisterPage from "./pages/Auth/registerPage.jsx";
+import Profile from "./pages/profile/profile.jsx";
+import CreateService from "./pages/services/createService.jsx";
+import UpdateService from "./components/updateService.jsx";
+import HowItWorks from "./pages/home/howItWorks.jsx";
+import ForgotPassword from "./pages/Auth/forgotPassword.jsx";
+import FaqPage from "./pages/home/faqPage.jsx";
+import ContactUs from "./pages/home/contactUs.jsx";
+import Whoops404 from "./pages/home/whoops.jsx";
+import AboutUs from "./pages/home/aboutUs.jsx";
+import Myrequests from "./pages/requests/myrequests.jsx";
+import RecievedRequests from "./pages/requests/recievedRequests.jsx";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userId, setUserId] = useState('');
-
+  const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
-    setUserName(localStorage.getItem('name') || '');
-    setUserId(localStorage.getItem('userId') || '');
+    setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
+    setUserName(localStorage.getItem("name") || "");
+    setUserId(localStorage.getItem("userId") || "");
   }, []);
+
+  function handleStateChange(newIsLoggedIn, newUserName, newUserId) {
+    console.log(
+      "handleStateChange called with:",
+      newIsLoggedIn,
+      newUserName,
+      newUserId
+    );
+    setIsLoggedIn(newIsLoggedIn);
+    setUserName(newUserName);
+    setUserId(newUserId);
+  }
 
   return (
     <>
-      <Navbar isLoggedIn = {isLoggedIn} setIsLoggedIn={setIsLoggedIn} userName={userName} setUserName={setUserName} userId={userId} setUserId ={setUserId} />
+      <Navbar
+        isLoggedIn={isLoggedIn}
+        setIsLoggedIn={setIsLoggedIn}
+        userName={userName}
+        setUserName={setUserName}
+        userId={userId}
+        setUserId={setUserId}
+      />
       <Routes>
-        <Route path="/" element={isLoggedIn ? <Home/> : <Welcome />}/>
-        <Route path="/home" element={isLoggedIn ? <Home/> : <Welcome />}/>
-        <Route path="/login" element={<LoginPage isLoggedIn = {isLoggedIn} setIsLoggedIn={setIsLoggedIn} userName={userName} setUserName={setUserName} userId={userId} setUserId ={setUserId}  />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/" element={isLoggedIn ? <Home /> : <Welcome />} />
+        <Route path="/home" element={isLoggedIn ? <Home /> : <Welcome />} />
+
+        {/* Login and Registration Routes */}
+        <Route
+          path="/login"
+          element={<LoginPage handleStateChange={handleStateChange} />}
+        />
+        <Route
+          path="/register"
+          element={
+            <RegisterPage
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+              userName={userName}
+              setUserName={setUserName}
+              userId={userId}
+              setUserId={setUserId}
+            />
+          }
+        />
+        <Route
+          path="/forgot-password"
+          element={
+            <ForgotPassword
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+              userName={userName}
+              setUserName={setUserName}
+              userId={userId}
+              setUserId={setUserId}
+            />
+          }
+        />
+
+        {/* Profile editing and viewing routes */}
         <Route path="/profile" element={<Profile />} />
 
+        {/* Find service related routes and send request */}
         <Route path="/find-service" element={<FindService />} />
-        <Route path="/request-confirm/:serviceId" element={<RequestConfirm />} />
-        <Route path="/request-sent" element={<RequestSent />} />
+        <Route
+          path="/send-request/:serviceId"
+          element={<FindServiceRequest />}
+        />
 
-        <Route path="/create-service" element={<CreateService />} />
-        <Route path="/create-service/:serviceId?" element={<CreateService />} />
-        <Route path="/update-service/" element={<UpdateService />} />
-        
-        {/* Static Routes */}
-        <Route path="/about" element={<div>About us</div>} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
+        {/* Your service list and offer it */}
         <Route path="/your-services" element={<Yourservices />} />
+        <Route path="/create-service" element={<CreateService />} />
+
+        {/* Your Request */}
+        <Route path="/myrequest" element={<Myrequests />} />
+
+        {/* Recieved Requests */}
+        <Route path="/recievedrequests" element={<RecievedRequests />} />
+
+        {/* Static Routes */}
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/faq" element={<FaqPage />} />
         <Route path="/contact" element={<ContactUs />} />
-        
+
         {/* 404 Route */}
-        
-        <Route path="*" element={<Whoops404/>}/>
-        
+        <Route path="*" element={<Whoops404 />} />
       </Routes>
     </>
   );

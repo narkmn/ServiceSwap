@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
-const Yourservices = () => {
-  const navigate = useNavigate();
+const RecievedRequests = () => {
   const userId = localStorage.getItem("userId");
-  const [userServices, setUserServices] = useState([]);
+  const [userRequests, setUserRequests] = useState([]);
   const [openMenu, setOpenMenu] = useState({ type: null, index: null });
 
-  const currentActions = ["Delete"]; // example actions
+  const currentActions = ["Accept", "Decline"];
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/services")
+      .get("http://localhost:8080/api/requests")
       .then((response) => {
+        console.log(response.data);
         const filtered = response.data.filter(
-          (service) => service.user.id === Number(userId)
+          (request) => request.receiver?.id === Number(userId) 
         );
-        setUserServices(filtered);
+        setUserRequests(filtered);
       })
-      .catch((error) => console.error("Error fetching services:", error));
+      .catch((error) => console.error("Error fetching requests:", error));
   }, []);
 
   const handleMenu = (type, idx) => {
@@ -31,72 +30,69 @@ const Yourservices = () => {
   };
 
   const handleActionClick = (action, req) => {
-    if (action === "Mark as Complete") {
-      // write a code
-    } else if (action === "Edit") {
-      // write a code
-    } else if (action === "Delete") {
-      axios
-        .delete(`http://localhost:8080/api/services/${req.id}`)
-        .then(() => {
-          setUserServices((prev) =>
-            prev.filter((service) => service.id !== req.id)
-          );
-          alert("Service deleted successfully!");
-        })
-        .catch((error) => console.error("Error deleting service:", error));
-    }
-  };
+  const newStatus = action === "Accept" ? "ACCEPTED" : "DECLINED";
+
+  axios
+    .patch(`http://localhost:8080/api/requests/${req.id}`, { status: newStatus })
+    .then(() => {
+      alert(`Request ${newStatus.toLowerCase()}!`);
+
+      setUserRequests((prevRequests) =>
+        prevRequests.map((r) =>
+          r.id === req.id ? { ...r, status: newStatus } : r
+        )
+      );
+
+      setOpenMenu({ type: null, index: null });
+    })
+    .catch((error) => {
+      console.error(`Error ${newStatus.toLowerCase()} request:`, error);
+      alert(`Failed to ${newStatus.toLowerCase()} request.`);
+    });
+};
 
   return (
     <div className="container py-5">
-      {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className="mb-4">
         <ol className="breadcrumb">
           <li className="breadcrumb-item">
             <a href="/">Home</a>
           </li>
           <li className="breadcrumb-item active" aria-current="page">
-            My Services
+            Received Requests
           </li>
         </ol>
       </nav>
 
-      {/* Page Header and Add Button */}
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h3 className="mb-0">My Active Services</h3>
-        <button
-          className="btn btn-success"
-          onClick={() => navigate("/create-service")}
-        >
-          + Add New Service
-        </button>
-      </div>
+      <h3 className="mb-3">Received Requests</h3>
 
-      {/* Table */}
       <table className="table table-bordered align-middle mb-5">
         <thead>
           <tr>
             <th>Request ID</th>
-            <th>Title</th>
-            <th>Category</th>
+            <th>Service Title</th>
             <th>Type</th>
-            <th>Description</th>
-            <th>Difficulty</th>
-            <th>Location</th>
+            <th>Service Description</th>
+            <th>Offered My Service</th>
+            <th>Proposed Date</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          {userServices.map((req, idx) => (
+          {userRequests.map((req, idx) => (
             <tr key={req.id}>
               <td>{req.id}</td>
-              <td>{req.serviceTitle}</td>
-              <td>{req.category}</td>
-              <td>{req.serviceType}</td>
-              <td>{req.description}</td>
-              <td>{req.serviceDifficulty}</td>
-              <td>{req.location}</td>
+              <td>
+                {req.service?.id} - {req.service?.serviceTitle}
+              </td>
+              <td>{req.service?.serviceType}</td>
+              <td>{req.service?.description}</td>
+              <td>
+                {req.swapServiceId?.id} - {req.swapServiceId?.serviceTitle}
+              </td>
+              <td>{req.proposedDate?.split("T")[0]}</td>
+              <td>{req.status}</td>
               <td style={{ position: "relative" }}>
                 <button
                   className="btn btn-link"
@@ -137,4 +133,4 @@ const Yourservices = () => {
   );
 };
 
-export default Yourservices;
+export default RecievedRequests;

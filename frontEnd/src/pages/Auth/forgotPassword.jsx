@@ -1,4 +1,16 @@
-const ForgotPassword = () => {
+import { useState, useEffect } from 'react';
+
+const ForgotPassword = ({isLoggedIn, setIsLoggedIn, userName, setUserName, userId, setUserId}) => {
+  useEffect(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('name');
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userId');
+      setIsLoggedIn(false);
+      setUserName('');
+      setUserId('');
+    }, [setIsLoggedIn, setUserName, setUserId]);
+
   return (
     <div>
 

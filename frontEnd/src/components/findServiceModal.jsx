@@ -1,16 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 
-const ServiceModal = ({ service, onClose }) => {
+const FindServiceModal = ({ service, onClose }) => {
   const navigate = useNavigate();
+  const userId = localStorage.getItem('userId');
 
   const handleRequestService = () => {
-    navigate(`/request-confirm/${service.id}`);
+    navigate(`/send-request/${service.id}`);
     onClose(); // Close modal after navigation
   };
 
   return (
     <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-      <div className="modal-dialog modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{service.title}</h5>
@@ -32,7 +33,10 @@ const ServiceModal = ({ service, onClose }) => {
           <div className="modal-footer">
             <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
             <button type="button" className="btn btn-primary" onClick={handleRequestService}>
-              Request Service
+              Request with your Service
+            </button>
+            <button type="button" className="btn btn-primary">
+              Request with TimeCredit
             </button>
           </div>
         </div>
@@ -41,4 +45,4 @@ const ServiceModal = ({ service, onClose }) => {
   );
 };
 
-export default ServiceModal;
+export default FindServiceModal;
