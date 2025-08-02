@@ -8,13 +8,13 @@ const FindServiceCard = ({ service, onClick }) => {
     >
       <img
         src={imageSrc}
-        alt={`Service ${service.title}`}
+        alt={`Service ${service.serviceTitle}`}
         className="card-img-top"
         style={{ objectFit: 'cover', height: '200px' }}
         onError={(e) => { e.target.src = '/images/default.jpg'; }}
       />
       <div className="card-body">
-        <h5 className="card-title">{service.title}</h5>
+        <h5 className="card-title">{service.serviceTitle}</h5>
         <p className="card-text text-truncate" title={service.description}>
           {service.description}
         </p>

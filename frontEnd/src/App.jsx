@@ -93,24 +93,24 @@ function App() {
         />
 
         {/* Profile editing and viewing routes */}
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={isLoggedIn ? <Profile />:<Welcome />} />
 
         {/* Find service related routes and send request */}
-        <Route path="/find-service" element={<FindService />} />
+        <Route path="/find-service" element={isLoggedIn ? <FindService />:<Welcome />} />
         <Route
           path="/send-request/:serviceId"
-          element={<FindServiceRequest />}
+          element={isLoggedIn ? <FindServiceRequest />:<Welcome />}
         />
 
         {/* Your service list and offer it */}
-        <Route path="/your-services" element={<Yourservices />} />
-        <Route path="/create-service" element={<CreateService />} />
+        <Route path="/your-services" element={isLoggedIn ? <Yourservices />:<Welcome />} />
+        <Route path="/create-service" element={isLoggedIn ? <CreateService />:<Welcome />} />
 
         {/* Your Request */}
-        <Route path="/myrequest" element={<Myrequests />} />
+        <Route path="/myrequest" element={isLoggedIn ? <Myrequests />:<Welcome />} />
 
         {/* Recieved Requests */}
-        <Route path="/recievedrequests" element={<RecievedRequests />} />
+        <Route path="/recievedrequests" element={isLoggedIn ? <RecievedRequests />:<Welcome />} />
 
         {/* Static Routes */}
         <Route path="/about" element={<AboutUs />} />

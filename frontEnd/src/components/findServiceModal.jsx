@@ -27,7 +27,7 @@ const FindServiceModal = ({ service, onClose }) => {
             />
             <p><strong>Description:</strong> {service.description}</p>
             <p><strong>Category:</strong> {service.category || 'Not specified'}</p>
-            <p><strong>Provider:</strong> {service.provider || 'Unknown'}</p>
+            <p><strong>Provider:</strong> {service.user?.username || 'Unknown'}</p>
             <p><strong>Rating:</strong> {service.rating || 'N/A'}</p>
           </div>
           <div className="modal-footer">

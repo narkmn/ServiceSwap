@@ -12,6 +12,7 @@ const FindService = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const userId = localStorage.getItem('userId');
+  console.log(services);
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/services')
