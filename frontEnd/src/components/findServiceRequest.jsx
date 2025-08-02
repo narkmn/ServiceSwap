@@ -125,13 +125,13 @@ const FindServiceRequest = () => {
           <form onSubmit={handleSubmit}>
             <h4 className="fw-bold mb-3">I Want Your Service</h4>
             <div className="mb-3">
-              <label htmlFor="date-from" className="form-label">Preferred Date*</label>
+              <label htmlFor="date-from" className="form-label">Preferred Date</label>
               <div className="input-group">
                 <input type="date" id="date-to" name="receiversenderdate" className="form-control" aria-label="End date" required />
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="location" className="form-label">Location*</label>
+              <label htmlFor="location" className="form-label">Location</label>
               <div className="input-group">
                 <span className="input-group-text">
                   <svg width="20" height="20" fill="#003366" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
