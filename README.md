@@ -1,6 +1,7 @@
 Clone the repository:
 
 git clone https://github.com/narkmn/ServiceSwap.git
+
 Navigate to the newly created folder:
 
 cd ServiceSwap
